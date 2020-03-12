@@ -105,6 +105,7 @@
     </Compile>
     <Compile Include="App\Program.cs" />
     <Compile Include="App\SettingsManager.cs" />
+    <Compile Include="Infrastructure\Common\IDragonPainterFactory.cs" />
     <Compile Include="Infrastructure\Injection\DependencyInjector.cs" />
     <Compile Include="Infrastructure\Common\FileBlobStorage.cs" />
     <Compile Include="Infrastructure\Common\IBlobStorage.cs" />

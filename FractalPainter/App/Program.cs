@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 using FractalPainting.App.Actions;
+using FractalPainting.App.Fractals;
 using FractalPainting.Infrastructure.Common;
 using FractalPainting.Infrastructure.UiActions;
 using Ninject;
+using Ninject.Extensions.Factory;
 
 namespace FractalPainting.App
 {
@@ -31,6 +33,8 @@ namespace FractalPainting.App
                 container.Bind<IUiAction>().To<ImageSettingsAction>().InSingletonScope();
                 container.Bind<IUiAction>().To<PaletteSettingsAction>().InSingletonScope();
 
+                container.Bind<IDragonPainterFactory>().ToFactory();
+                
                 //container.Bind<IImageHolder>().To<>();
                 //container.Bind<Palette>().To();
 
