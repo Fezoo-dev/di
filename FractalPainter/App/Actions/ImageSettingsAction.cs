@@ -4,19 +4,15 @@ using FractalPainting.Infrastructure.UiActions;
 
 namespace FractalPainting.App.Actions
 {
-    public class ImageSettingsAction : IUiAction, INeed<IImageSettingsProvider>, INeed<IImageHolder>
+    public class ImageSettingsAction : IUiAction
     {
-        private IImageHolder imageHolder;
-        private IImageSettingsProvider imageSettingsProvider;
+        private readonly IImageHolder imageHolder;
+        private readonly IImageSettingsProvider imageSettingsProvider;
 
-        public void SetDependency(IImageHolder dependency)
-        {
-            imageHolder = dependency;
-        }
-
-        public void SetDependency(IImageSettingsProvider dependency)
-        {
-            imageSettingsProvider = dependency;
+        public ImageSettingsAction(IImageHolder imageHolder, IImageSettingsProvider imageSettingsProvider)
+        { 
+            this.imageHolder = imageHolder;
+            this.imageSettingsProvider = imageSettingsProvider;
         }
 
         public string Category => "Настройки";

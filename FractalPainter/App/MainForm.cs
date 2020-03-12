@@ -11,9 +11,9 @@ namespace FractalPainting.App
 {
     public class MainForm : Form
     {
-        public MainForm(IUiAction[] actions, PictureBoxImageHolder pictureBox)
+        public MainForm(IUiAction[] actions, PictureBoxImageHolder pictureBox, Func<ImageSettings> imageSettingsFactory)
         {
-            var imageSettings = CreateSettingsManager().Load().ImageSettings;
+            var imageSettings = imageSettingsFactory();
             ClientSize = new Size(imageSettings.Width, imageSettings.Height);
 
             var mainMenu = new MenuStrip();
@@ -23,19 +23,6 @@ namespace FractalPainting.App
             pictureBox.RecreateImage(imageSettings);
             pictureBox.Dock = DockStyle.Fill;
             Controls.Add(pictureBox);
-
-            DependencyInjector.Inject<IImageHolder>(actions, pictureBox);
-            DependencyInjector.Inject<IImageDirectoryProvider>(actions, CreateSettingsManager().Load());
-            DependencyInjector.Inject<IImageSettingsProvider>(actions, CreateSettingsManager().Load());
-            DependencyInjector.Inject(actions, new Palette());
-        }
-
-        private static SettingsManager CreateSettingsManager()
-        {
-            var container = new StandardKernel();
-            container.Bind<IObjectSerializer>().To<XmlObjectSerializer>();
-            container.Bind<IBlobStorage>().To<FileBlobStorage>();
-            return container.Get<SettingsManager>();
         }
 
         protected override void OnShown(EventArgs e)

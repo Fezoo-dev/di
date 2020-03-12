@@ -33,6 +33,17 @@ namespace FractalPainting.App
                 container.Bind<IUiAction>().To<ImageSettingsAction>().InSingletonScope();
                 container.Bind<IUiAction>().To<PaletteSettingsAction>().InSingletonScope();
 
+                container.Bind<IObjectSerializer>().To<XmlObjectSerializer>()
+                    .WhenInjectedInto<SettingsManager>();
+                container.Bind<IBlobStorage>().To<FileBlobStorage>()
+                    .WhenInjectedInto<SettingsManager>();
+
+                container.Bind<IImageSettingsProvider, IImageDirectoryProvider>()
+                    .ToMethod(context => context.Kernel.Get<SettingsManager>().Load())
+                    .InSingletonScope();
+
+                //var imageSettings = CreateSettingsManager().Load().ImageSettings;
+
                 //container.Bind<IDragonPainterFactory>().ToFactory();
 
                 //container.Bind<IImageHolder>().To<>();
