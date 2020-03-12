@@ -1,17 +1,20 @@
 ﻿using System;
 using FractalPainting.App.Fractals;
 using FractalPainting.Infrastructure.Common;
-using FractalPainting.Infrastructure.Injection;
 using FractalPainting.Infrastructure.UiActions;
 using Ninject;
 
 namespace FractalPainting.App.Actions
 {
+    // using DragonFactoryType = IDragonPainterFactory
+    using DragonFactoryType = Func<DragonSettings, DragonPainter>;
+
     public class DragonFractalAction : IUiAction
     {
-        private IDragonPainterFactory dragonPainterFactory;
+        //private DragonFactoryType dragonPainterFactory;
+        private DragonFactoryType dragonPainterFactory;
 
-        public DragonFractalAction(IDragonPainterFactory dragonPainterFactory)
+        public DragonFractalAction(DragonFactoryType dragonPainterFactory)
         {
             this.dragonPainterFactory = dragonPainterFactory;
         }
@@ -23,8 +26,9 @@ namespace FractalPainting.App.Actions
         public void Perform()
         {
             var dragonSettings = CreateRandomSettings();
-            var dragonPainter = dragonPainterFactory.Create(dragonSettings);
-            dragonPainter.Paint();
+            SettingsForm.For(dragonSettings).ShowDialog();
+            dragonPainterFactory(dragonSettings)
+                .Paint();
         }
 
         private static DragonSettings CreateRandomSettings()

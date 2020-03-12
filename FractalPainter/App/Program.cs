@@ -33,8 +33,8 @@ namespace FractalPainting.App
                 container.Bind<IUiAction>().To<ImageSettingsAction>().InSingletonScope();
                 container.Bind<IUiAction>().To<PaletteSettingsAction>().InSingletonScope();
 
-                container.Bind<IDragonPainterFactory>().ToFactory();
-                
+                //container.Bind<IDragonPainterFactory>().ToFactory();
+
                 //container.Bind<IImageHolder>().To<>();
                 //container.Bind<Palette>().To();
 
