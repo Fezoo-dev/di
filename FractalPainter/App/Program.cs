@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using FractalPainting.App.Actions;
 using FractalPainting.App.Fractals;
 using FractalPainting.Infrastructure.Common;
 using FractalPainting.Infrastructure.UiActions;
 using Ninject;
+using Ninject.Extensions.Conventions;
 using Ninject.Extensions.Factory;
 
 namespace FractalPainting.App
@@ -27,11 +29,12 @@ namespace FractalPainting.App
                     .InSingletonScope();
                 container.Bind<Palette>().ToSelf().InSingletonScope();
 
-                container.Bind<IUiAction>().To<SaveImageAction>().InSingletonScope();
-                container.Bind<IUiAction>().To<DragonFractalAction>().InSingletonScope();
-                container.Bind<IUiAction>().To<KochFractalAction>().InSingletonScope();
-                container.Bind<IUiAction>().To<ImageSettingsAction>().InSingletonScope();
-                container.Bind<IUiAction>().To<PaletteSettingsAction>().InSingletonScope();
+                container.Bind(x => x
+                    .FromThisAssembly()
+                    .SelectAllClasses().InNamespaceOf<DragonFractalAction>()
+                    .BindAllInterfaces()
+                    .Configure(b => b.InSingletonScope())
+                );
 
                 container.Bind<IObjectSerializer>().To<XmlObjectSerializer>()
                     .WhenInjectedInto<SettingsManager>();
@@ -41,13 +44,6 @@ namespace FractalPainting.App
                 container.Bind<IImageSettingsProvider, IImageDirectoryProvider>()
                     .ToMethod(context => context.Kernel.Get<SettingsManager>().Load())
                     .InSingletonScope();
-
-                //var imageSettings = CreateSettingsManager().Load().ImageSettings;
-
-                //container.Bind<IDragonPainterFactory>().ToFactory();
-
-                //container.Bind<IImageHolder>().To<>();
-                //container.Bind<Palette>().To();
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
